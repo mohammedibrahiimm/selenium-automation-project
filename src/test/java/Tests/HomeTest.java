@@ -1,3 +1,5 @@
+package Tests;
+
 import POM.LoginPage;
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
@@ -7,22 +9,19 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class LoginTest {
+public class HomeTest {
     WebDriver driver;
 
     @Test
-    public void validLoginTest(){
+    public void addToCartTC(){
         new LoginPage(driver).
                 Login("standard_user","secret_sauce").
-                isLoggedIn("https://www.saucedemo.com/inventory.html");
+                isLoggedIn("https://www.saucedemo.com/inventory.html").
+                addToCart().
+                validateCartIcon();
     }
 
-    @Test
-    public void invalidLoginTest(){
-        new LoginPage(driver).
-        Login("locked_out_user","secret_sauce").
-                isLoggedIn("https://www.saucedemo.com/");
-    }
+
 
     @BeforeMethod
     public void setUp(){

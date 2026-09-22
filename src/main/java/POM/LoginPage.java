@@ -1,6 +1,7 @@
 package POM;
 
 import Utils.LogUtils;
+import Utils.actionUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
@@ -13,17 +14,19 @@ public class LoginPage {
     private final By username = By.id("user-name");
     private final By password = By.id("password");
     private final By loginBtn = By.id("login-button");
+    private actionUtils action;
 
     public LoginPage(WebDriver driver){
-        this.driver=driver;
+        this.driver = driver;
+        this.action = new actionUtils(driver);
     }
 
     public LoginPage Login(String username,String password){
-        driver.findElement(this.username).sendKeys(username);
+        action.sendKeys(this.username,username);
         LogUtils.info(username+" in the Username field");
-        driver.findElement(this.password).sendKeys(password);
+        action.sendKeys(this.password,password);
         LogUtils.info(password+" in the Password field");
-        driver.findElement(loginBtn).click();
+        action.click(this.loginBtn);
         LogUtils.info("Click on the Login button");
         return this;
     }

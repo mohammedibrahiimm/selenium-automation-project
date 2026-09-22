@@ -1,3 +1,5 @@
+package Tests;
+
 import Utils.LogUtils;
 import org.testng.annotations.Test;
 
