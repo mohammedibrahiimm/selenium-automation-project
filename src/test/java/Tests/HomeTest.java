@@ -1,6 +1,7 @@
 package Tests;
 
 import POM.LoginPage;
+import drivers.WebDriverFactory;
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -25,14 +26,11 @@ public class HomeTest {
 
     @BeforeMethod
     public void setUp(){
-        EdgeOptions edgeOptions = new EdgeOptions();
-        edgeOptions.addArguments("--start-maximized");
-        edgeOptions.setPageLoadStrategy(PageLoadStrategy.EAGER);
-        driver=new EdgeDriver(edgeOptions);
+        driver = WebDriverFactory.initDriver("edge");
         driver.get("https://www.saucedemo.com/");
     }
     @AfterMethod
     public void tearDown(){
-        driver.quit();
+        WebDriverFactory.tearDown();
     }
 }
