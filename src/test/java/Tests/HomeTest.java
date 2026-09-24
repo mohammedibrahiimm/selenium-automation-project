@@ -45,10 +45,13 @@ public class HomeTest {
     @Test
     public void addAllItemsUpdatesBadge() {
         HomePage home = new HomePage(driver);
-        home.getTotalItemPrice();
 
-        int expected = TestContext.get(TestContext.ITEM_COUNT);
-        Assert.assertEquals(home.getCartBadgeCount(), expected,
+        home.captureInventoryData();
+        int expectedCount = TestContext.get(TestContext.ITEM_COUNT);
+
+        home.addAllItemsToCart();
+
+        Assert.assertEquals(home.getCartBadgeCount(), expectedCount,
                 "Badge should equal number of items added");
     }
 }

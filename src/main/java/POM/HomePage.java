@@ -1,8 +1,8 @@
 package POM;
 
+import Utils.ActionUtils;
 import Utils.LogUtils;
 import Utils.TestContext;
-import Utils.ActionUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -36,8 +36,12 @@ public class HomePage {
         return Integer.parseInt(action.getText(CART_BADGE).trim());
     }
 
-    /** Reads inventory, stores data in TestContext, adds all items to cart. */
-    public double getTotalItemPrice() {
+    /**
+     * Reads prices and item names from the inventory page and stores
+     * them in TestContext. Returns the sum of all item prices.
+     * Does NOT touch the cart.
+     */
+    public double captureInventoryData() {
         List<WebElement> priceElements = driver.findElements(ITEM_PRICES);
         List<WebElement> nameElements  = driver.findElements(ITEM_NAMES);
 
@@ -55,13 +59,20 @@ public class HomePage {
         TestContext.set(TestContext.ITEM_COUNT, priceElements.size());
         TestContext.set(TestContext.ITEM_NAMES, names);
 
-        // Now add every item to cart
+        LogUtils.info("Captured " + names.size() + " items, total = " + sum);
+        return sum;
+    }
+
+    /**
+     * Clicks the "Add to cart" button for every item on the inventory page.
+     */
+    public HomePage addAllItemsToCart() {
         List<WebElement> buttons = driver.findElements(ADD_TO_CART_BUTTONS);
         for (WebElement btn : buttons) {
             btn.click();
         }
-        LogUtils.info("Added " + buttons.size() + " items, total = " + sum);
-        return sum;
+        LogUtils.info("Added " + buttons.size() + " items to cart");
+        return this;
     }
 
     public CartPage navigateToCart() {
