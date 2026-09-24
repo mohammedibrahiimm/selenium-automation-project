@@ -2,6 +2,7 @@ package Tests;
 
 import POM.HomePage;
 import POM.LoginPage;
+import Utils.JsonReader;
 import Utils.PropertyReader;
 import Utils.TestContext;
 import drivers.WebDriverFactory;
@@ -14,14 +15,17 @@ import org.testng.annotations.Test;
 public class HomeTest {
 
     private WebDriver driver;
+    private JsonReader testData;
 
     @BeforeMethod
     public void setUp() {
         driver = WebDriverFactory.initDriver();
         driver.get(PropertyReader.getProperty("baseUrl"));
+        testData = new JsonReader(PropertyReader.getProperty("jsonFile"));
+
         new LoginPage(driver).login(
-                PropertyReader.getProperty("validUsername"),
-                PropertyReader.getProperty("validPassword"));
+                testData.getJsonData("$.users.valid.username"),
+                testData.getJsonData("$.users.valid.password"));
     }
 
     @AfterMethod
@@ -41,7 +45,7 @@ public class HomeTest {
     @Test
     public void addAllItemsUpdatesBadge() {
         HomePage home = new HomePage(driver);
-        home.getTotalItemPrice();   // captures prices/count/names AND adds all items to cart
+        home.getTotalItemPrice();
 
         int expected = TestContext.get(TestContext.ITEM_COUNT);
         Assert.assertEquals(home.getCartBadgeCount(), expected,

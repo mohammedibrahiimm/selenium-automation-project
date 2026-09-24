@@ -1,6 +1,7 @@
 package Tests;
 
 import POM.LoginPage;
+import Utils.JsonReader;
 import Utils.PropertyReader;
 import drivers.WebDriverFactory;
 import org.openqa.selenium.WebDriver;
@@ -12,11 +13,13 @@ import org.testng.annotations.Test;
 public class LoginTest {
 
     private WebDriver driver;
+    private JsonReader testData;
 
     @BeforeMethod
     public void setUp() {
         driver = WebDriverFactory.initDriver();
         driver.get(PropertyReader.getProperty("baseUrl"));
+        testData = new JsonReader(PropertyReader.getProperty("jsonFile"));
     }
 
     @AfterMethod
@@ -27,8 +30,8 @@ public class LoginTest {
     @Test
     public void validLoginTest() {
         new LoginPage(driver).login(
-                PropertyReader.getProperty("validUsername"),
-                PropertyReader.getProperty("validPassword"));
+                testData.getJsonData("$.users.valid.username"),
+                testData.getJsonData("$.users.valid.password"));
 
         Assert.assertEquals(driver.getCurrentUrl(),
                 PropertyReader.getProperty("homePageUrl"),
@@ -38,8 +41,8 @@ public class LoginTest {
     @Test
     public void invalidLoginTest() {
         new LoginPage(driver).login(
-                PropertyReader.getProperty("invalidUsername"),
-                PropertyReader.getProperty("invalidPassword"));
+                testData.getJsonData("$.users.invalid.username"),
+                testData.getJsonData("$.users.invalid.password"));
 
         Assert.assertEquals(driver.getCurrentUrl(),
                 PropertyReader.getProperty("baseUrl"),

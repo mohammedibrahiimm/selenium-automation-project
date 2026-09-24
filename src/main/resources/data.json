@@ -1,15 +1,33 @@
 {
-  "validUsername": "standard_user",
-  "validPassword":"secret_sauce",
-  "invalidUsername":"locked_out_user",
-  "invalidPassword":"secret_sauc",
-  "browser":"chrome",
-  "baseUrl":"https://www.saucedemo.com/",
-  "homePageUrl":"https://www.saucedemo.com/inventory.html",
-  "cartUrl":"https://www.saucedemo.com/cart.html",
-  "checkoutUrl":"https://www.saucedemo.com/checkout-step-one.html",
-  "firstName":"mohamed",
-  "lastName":"ibrahim",
-  "zipCode":"11672"
-
+  "users": {
+    "valid": {
+      "username": "standard_user",
+      "password": "secret_sauce"
+    },
+    "invalid": {
+      "username": "locked_out_user",
+      "password": "secret_sauce"
+    },
+    "problem": {
+      "username": "problem_user",
+      "password": "secret_sauce"
+    },
+    "performance": {
+      "username": "performance_glitch_user",
+      "password": "secret_sauce"
+    }
+  },
+  "checkout": {
+    "firstName": "mohamed",
+    "lastName": "ibrahim",
+    "zipCode": "11672"
+  },
+  "items": {
+    "backpack": "Sauce Labs Backpack",
+    "bikeLight": "Sauce Labs Bike Light",
+    "boltTShirt": "Sauce Labs Bolt T-Shirt",
+    "fleeceJacket": "Sauce Labs Fleece Jacket",
+    "onesie": "Sauce Labs Onesie",
+    "redTShirt": "Test.allTheThings() T-Shirt (Red)"
+  }
 }
