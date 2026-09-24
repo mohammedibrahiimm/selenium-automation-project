@@ -1,5 +1,6 @@
 package drivers;
 
+import Utils.CleanupUtils;
 import Utils.LogUtils;
 import Utils.PropertyReader;
 import org.openqa.selenium.WebDriver;
@@ -39,10 +40,21 @@ public class WebDriverFactory {
 
     public static void tearDown() {
         WebDriver driver = DRIVER.get();
-        if (driver != null) {
+        if (driver == null) {
+            LogUtils.warn("tearDown called but no driver in ThreadLocal — skipping");
+            return;
+        }
+
+        CleanupUtils.cleanBrowserState(driver);
+
+        try {
             driver.quit();
+            LogUtils.info("Driver quit");
+        } catch (Exception e) {
+            LogUtils.error("Error quitting driver: " + e.getMessage());
+        } finally {
             DRIVER.remove();
-            LogUtils.info("Driver quit and removed from ThreadLocal");
+            LogUtils.info("Driver removed from ThreadLocal");
         }
     }
 }

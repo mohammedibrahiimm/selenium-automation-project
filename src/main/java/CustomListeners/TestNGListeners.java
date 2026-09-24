@@ -2,7 +2,6 @@ package CustomListeners;
 
 import Utils.LogUtils;
 import Utils.PropertyReader;
-import Utils.TestContext;
 import org.testng.IExecutionListener;
 import org.testng.IInvokedMethod;
 import org.testng.IInvokedMethodListener;
@@ -13,7 +12,6 @@ public class TestNGListeners implements ITestListener, IInvokedMethodListener, I
 
     @Override
     public void onTestStart(ITestResult result) {
-        TestContext.clear();
         LogUtils.info("Test Started: " + result.getMethod().getMethodName());
     }
 
