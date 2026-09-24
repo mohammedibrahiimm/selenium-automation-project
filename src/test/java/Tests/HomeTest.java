@@ -4,7 +4,6 @@ import POM.HomePage;
 import POM.LoginPage;
 import Utils.JsonReader;
 import Utils.PropertyReader;
-import Utils.TestContext;
 import drivers.WebDriverFactory;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -46,13 +45,11 @@ public class HomeTest {
     public void addAllItemsUpdatesBadge() {
         HomePage home = new HomePage(driver);
 
-        home.captureInventoryData();
-        int expectedCount = TestContext.get(TestContext.ITEM_COUNT);
+        int expectedCount = home.getItemCount();     // ← read from page, no TestContext
 
         home.addAllItemsToCart();
 
         Assert.assertEquals(home.getCartBadgeCount(), expectedCount,
                 "Badge should equal number of items added");
     }
-
 }
