@@ -10,22 +10,23 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
-public class waitUtils {
-    private WebDriver driver;
+public class WaitUtils {
 
-    public waitUtils(WebDriver driver){
+    private final WebDriver driver;
+
+    public WaitUtils(WebDriver driver) {
         this.driver = driver;
     }
 
-    public FluentWait<WebDriver> fluentWait(){
+    public FluentWait<WebDriver> fluentWait() {
         return new FluentWait<>(driver)
                 .withTimeout(Duration.ofSeconds(10))
                 .pollingEvery(Duration.ofMillis(100))
-                .ignoreAll(exceptionArrayList());
+                .ignoreAll(ignoredExceptions());
     }
 
-    private ArrayList<Class<?extends Exception>> exceptionArrayList(){
-        ArrayList<Class<?extends Exception>> exceptions = new ArrayList<>();
+    private ArrayList<Class<? extends Exception>> ignoredExceptions() {
+        ArrayList<Class<? extends Exception>> exceptions = new ArrayList<>();
         exceptions.add(NoSuchElementException.class);
         exceptions.add(StaleElementReferenceException.class);
         exceptions.add(ElementNotInteractableException.class);

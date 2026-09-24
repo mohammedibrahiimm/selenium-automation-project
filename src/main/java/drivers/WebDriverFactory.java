@@ -1,28 +1,48 @@
 package drivers;
 
+import Utils.LogUtils;
+import Utils.PropertyReader;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ThreadGuard;
 
 public class WebDriverFactory {
 
-    private static ThreadLocal<WebDriver> driverThreadLocal = new ThreadLocal<>();
+    private static final ThreadLocal<WebDriver> DRIVER = new ThreadLocal<>();
 
-    private static AbstractDriver getDrive(String browser){
-        return switch (browser){
-            case "chrome" -> new ChromeFactory();
-            case "edge" -> new EdgeFactory();
-            default -> throw new IllegalArgumentException("Browser not supported");
-        };
+    private WebDriverFactory() {}
+
+    private static WebDriver createDriver() {
+        String browserName = PropertyReader.getProperty("browser");
+        if (browserName == null || browserName.isBlank()) {
+            throw new IllegalStateException("Property 'browser' is not set in config");
+        }
+        Browser browserType = Browser.valueOf(browserName.trim().toUpperCase());
+        LogUtils.info("Browser type: " + browserType);
+        return browserType.getDriverFactory().createDriver();
     }
 
-    public static WebDriver initDriver(String browser){
-        WebDriver driver = ThreadGuard.protect(getDrive(browser).createDriver());
-        driverThreadLocal.set(driver);
-        return driverThreadLocal.get();
+    public static WebDriver initDriver() {
+        WebDriver driver = ThreadGuard.protect(createDriver());
+        DRIVER.set(driver);
+        LogUtils.info("Driver initialized");
+        return driver;
     }
 
-    public static void tearDown(){
-        driverThreadLocal.get().quit();
-        driverThreadLocal.remove();
+    public static WebDriver getDriver() {
+        WebDriver driver = DRIVER.get();
+        if (driver == null) {
+            throw new IllegalStateException(
+                    "Driver not initialized — call WebDriverFactory.initDriver() first");
+        }
+        return driver;
+    }
+
+    public static void tearDown() {
+        WebDriver driver = DRIVER.get();
+        if (driver != null) {
+            driver.quit();
+            DRIVER.remove();
+            LogUtils.info("Driver quit and removed from ThreadLocal");
+        }
     }
 }

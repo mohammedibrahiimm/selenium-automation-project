@@ -1,39 +1,48 @@
 package Tests;
 
 import POM.LoginPage;
+import Utils.PropertyReader;
 import drivers.WebDriverFactory;
-import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.edge.EdgeOptions;
+import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class LoginTest {
-    WebDriver driver;
 
-    @Test
-    public void validLoginTest(){
-        new LoginPage(driver).
-                Login("standard_user","secret_sauce").
-                isLoggedIn("https://www.saucedemo.com/inventory.html");
-    }
-
-    @Test
-    public void invalidLoginTest(){
-        new LoginPage(driver).
-        Login("locked_out_user","secret_sauce").
-                isLoggedIn("https://www.saucedemo.com/");
-    }
+    private WebDriver driver;
 
     @BeforeMethod
-    public void setUp(){
-        driver = WebDriverFactory.initDriver("edge");
-        driver.get("https://www.saucedemo.com/");
+    public void setUp() {
+        driver = WebDriverFactory.initDriver();
+        driver.get(PropertyReader.getProperty("baseUrl"));
     }
+
     @AfterMethod
-    public void tearDown(){
+    public void tearDown() {
         WebDriverFactory.tearDown();
+    }
+
+    @Test
+    public void validLoginTest() {
+        new LoginPage(driver).login(
+                PropertyReader.getProperty("validUsername"),
+                PropertyReader.getProperty("validPassword"));
+
+        Assert.assertEquals(driver.getCurrentUrl(),
+                PropertyReader.getProperty("homePageUrl"),
+                "Should land on home page after valid login");
+    }
+
+    @Test
+    public void invalidLoginTest() {
+        new LoginPage(driver).login(
+                PropertyReader.getProperty("invalidUsername"),
+                PropertyReader.getProperty("invalidPassword"));
+
+        Assert.assertEquals(driver.getCurrentUrl(),
+                PropertyReader.getProperty("baseUrl"),
+                "Should stay on login page after invalid login");
     }
 }

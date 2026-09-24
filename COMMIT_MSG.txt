@@ -1,0 +1,40 @@
+refactor: restructure framework architecture and fix critical bugs
+
+BREAKING CHANGES:
+- Renamed Utils.actionUtils -> Utils.ActionUtils (PascalCase convention)
+- Renamed Utils.waitUtils -> Utils.WaitUtils (PascalCase convention)
+
+Core fixes:
+- WebDriverFactory: removed static property read at class load (NPE risk),
+  added lazy loading and getDriver() accessor
+- ActionUtils: removed shared mutable WebElement field (thread-safety),
+  removed nested fluent waits that multiplied timeouts
+- PropertyReader: stopped polluting System.getProperties() globally,
+  added lazy loading and cached Properties instance
+- JsonReader: switched to classpath loading (was hardcoded src/main/resources),
+  fails fast on missing files instead of silently returning "{}",
+  fixed JsonPath return type handling
+- LogUtils: replaced fragile stack-index [3] with robust caller detection
+
+New components:
+- AnnotationTransformer: wires RetryAnalyzer globally to all @Test methods
+- TestContext: thread-local store for runtime test data (price, count, names)
+- CartPage: page object for shopping cart
+- Browser enum with constant-specific factories (Chrome/Edge/Firefox/Safari)
+- Edge, Firefox, Safari factory implementations
+
+Improvements:
+- TestNGListeners: added onTestStart() to clear TestContext between tests
+- RetryAnalyzer: counter-based retry with MAX_RETRIES constant
+- Removed unused imports across all files
+- Standardized locator naming (UPPER_SNAKE_CASE) across page objects
+- Page objects return next page object for fluent chaining
+
+Tests:
+- LoginTest, HomeTest refactored to be self-contained (no dependsOnMethods)
+- Fixed test setup to log in via @BeforeMethod
+
+Config:
+- Registered listeners via META-INF/services/org.testng.ITestNGListener
+- Added data.properties for environment config
+- Added data.json for test data
