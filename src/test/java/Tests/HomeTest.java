@@ -54,4 +54,5 @@ public class HomeTest {
         Assert.assertEquals(home.getCartBadgeCount(), expectedCount,
                 "Badge should equal number of items added");
     }
+
 }
