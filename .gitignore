@@ -38,3 +38,6 @@ COMMIT_MSG.txt
 .env
 .env.local
 secrets.properties
+
+# Screenshots from test failures
+test-outputs/screenshots/

@@ -2,6 +2,7 @@ package CustomListeners;
 
 import Utils.LogUtils;
 import Utils.PropertyReader;
+import Utils.ScreenshotUtils;
 import org.testng.IExecutionListener;
 import org.testng.IInvokedMethod;
 import org.testng.IInvokedMethodListener;
@@ -36,9 +37,9 @@ public class TestNGListeners implements ITestListener, IInvokedMethodListener, I
 
     @Override
     public void onTestFailure(ITestResult result) {
-        LogUtils.error("Test Failed: " + result.getMethod().getMethodName()
-                + " — " + result.getThrowable());
-        // TODO: attach screenshot here once DriverManager is ready
+        String testName = result.getMethod().getMethodName();
+        LogUtils.error("Test Failed: " + testName + " — " + result.getThrowable());
+        ScreenshotUtils.capture(testName);
     }
 
     @Override

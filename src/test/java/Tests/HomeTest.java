@@ -45,7 +45,7 @@ public class HomeTest {
     public void addAllItemsUpdatesBadge() {
         HomePage home = new HomePage(driver);
 
-        int expectedCount = home.getItemCount();     // ← read from page, no TestContext
+        int expectedCount = home.getItemCount();
 
         home.addAllItemsToCart();
 
