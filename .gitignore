@@ -41,3 +41,7 @@ secrets.properties
 
 # Screenshots from test failures
 test-outputs/screenshots/reports/
+reports/
+test-outputs/
+target/
+allure-results/
