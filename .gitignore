@@ -40,4 +40,4 @@ COMMIT_MSG.txt
 secrets.properties
 
 # Screenshots from test failures
-test-outputs/screenshots/
+test-outputs/screenshots/reports/

@@ -4,6 +4,8 @@ import POM.LoginPage;
 import Utils.JsonReader;
 import Utils.PropertyReader;
 import drivers.WebDriverFactory;
+import io.qameta.allure.*;
+import io.qameta.allure.testng.Tag;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -29,7 +31,17 @@ public class LoginTest {
     }
 
     @Test
+    @Description("Verify that the user is redirected to the home page after providing valid credentials")
+    @Tag("Valid Login")
+    @Owner("Mohamed Ibrahim")
+    @Severity(SeverityLevel.CRITICAL)
+    @Link("www.confluence.jira.com/login")
+    @TmsLink("www.facebook.com")
+    @Issue("www.lol.com")
     public void validLogin() {
+        Allure.getLifecycle().updateTest(testResult->{
+            testResult.setName("Valid Login");
+        });
         new LoginPage(driver).login(
                 testData.getJsonData("$.users.valid.username"),
                 testData.getJsonData("$.users.valid.password"));
